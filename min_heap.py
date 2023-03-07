@@ -43,53 +43,131 @@ class MinHeap:
 
     def add(self, node: object) -> None:
         """
-        TODO: Write this implementation
+        adds a new object to the MinHeap while maintaining heap property.
         """
-        pass
+        # set variables
+        self._heap.append(node)
+        child = self._heap.length() - 1
+        parent = (child - 1) // 2
+
+        # if self._heap.length() - 1 is = to 0, return
+        if child == 0:
+            return
+
+        # if child heap < parent heap
+        while self._heap[child] < self._heap[parent]:
+            # set parent and child heap =
+            temp_child = self._heap[child]
+            self._heap[child] = self._heap[parent]
+            self._heap[parent] = temp_child
+            # set =, then -1 and / by 2
+            child = parent
+            parent = (child - 1) // 2
+
+            # return if 0
+            if child == 0:
+                return
+
+        # remove pass
 
     def is_empty(self) -> bool:
         """
-        TODO: Write this implementation
+        returns True if the heap is empty; otherwise, it returns False.
         """
-        pass
+        if self._heap.is_empty():
+            return True
+        else:
+            return False
+
+        # remove pass
 
     def get_min(self) -> object:
         """
-        TODO: Write this implementation
+        returns an object with the minimum key, without removing it from the heap.
+        If the heap is empty, the method raises a MinHeapException.
         """
-        pass
+        if self._heap.is_empty():
+            raise MinHeapException
+        else:
+            return self._heap[0]
+
+        # remove pass
 
     def remove_min(self) -> object:
         """
-        TODO: Write this implementation
+        returns an object with the minimum key, and removes it from the heap.
+        If the heap is empty, the method raises a MinHeapException.
         """
-        pass
+        # set variables
+        min_num = self.get_min()
+        self._heap[0] = self._heap[self._heap.length() - 1]
+        self._heap.remove_at_index(self._heap.length() - 1)
+
+        # call parcolate down function
+        _percolate_down(self._heap, 0)
+
+        # return min
+        return min_num
+
+        # remove pass
 
     def build_heap(self, da: DynamicArray) -> None:
         """
-        TODO: Write this implementation
+        receives a DynamicArray with objects in any order, and builds a proper MinHeap from them.
+        The current content of the MinHeap is overwritten.
         """
-        pass
+        # set variables
+        self._heap = DynamicArray(da)
+        right_index = self._heap.length() - 1
+
+        # get last indexed parent
+        index = (right_index - 1) // 2
+
+        # while index greater than -1, call percolate down
+        while index > -1:
+            _percolate_down(self._heap, index)
+            # -1 from index
+            index -= 1
+
+        # remove pass
 
     def size(self) -> int:
         """
-        TODO: Write this implementation
+        returns the number of items currently stored in the heap
         """
-        pass
+        return self._heap.length()
+
+        # remove pass
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        clears the contents of the heap.
         """
-        pass
+        self._heap = DynamicArray()
+
+        # remove pass
 
 
 def heapsort(da: DynamicArray) -> None:
     """
-    TODO: Write this implementation
+    Receives a DynamicArray and sorts its content in non-ascending order, using the Heapsort algorithm.
+    You must sort the array in place, without creating any data structures.
+    This function does not return anything.
     """
-    pass
+    # set variables
+    right_index = da.length() - 1
+    heap = MinHeap()
+    heap.build_heap(da)
 
+    # while index greater than or = to 0,
+    while right_index >= 0:
+        # set dynamic array index to remove min value
+        da[right_index] = heap.remove_min()
+
+        # index - 1
+        right_index -= 1
+
+    # remove pass
 
 # It's highly recommended that you implement the following optional          #
 # function for percolating elements down the MinHeap. You can call           #
@@ -97,9 +175,25 @@ def heapsort(da: DynamicArray) -> None:
 
 def _percolate_down(da: DynamicArray, parent: int) -> None:
     """
-    TODO: Write your implementation
+    percolates down the heap by swapping node with child position
     """
-    pass
+    # while less than dynamic array length, move position
+    while (2 * parent + 1) < da.length():
+        child = 2 * parent + 1
+
+        # if parent is less than, move position
+        if (2 * parent + 2) < da.length() and da[2 * parent + 2] < da[2 * parent + 1]:
+            child = 2 * parent + 2
+
+        # if child is greater than parent, return
+        if da[child] > da[parent]:
+            return
+
+        # set parent = to child
+        da[child], da[parent] = da[parent], da[child]
+        parent = child
+
+    # remove pass
 
 
 # ------------------- BASIC TESTING -----------------------------------------
